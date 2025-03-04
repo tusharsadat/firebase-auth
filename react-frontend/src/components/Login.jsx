@@ -7,12 +7,15 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -24,6 +27,8 @@ const Login = () => {
       );
       dispatch(setUser({ user: data.email, token: response.data.token }));
       toast.success("Login successful!");
+      reset(); // Clear input fields
+      navigate("/dashboard"); // Redirect to dashboard
     } catch (error) {
       console.error("Login failed", error);
       toast.error("Invalid credentials. Please try again.");
@@ -35,6 +40,7 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       dispatch(setUser({ user: result.user.email, token: "google-token" }));
       toast.success("Google login successful!");
+      navigate("/dashboard"); // Redirect to dashboard
     } catch (error) {
       console.error("Google login failed", error);
       toast.error("Google login failed. Please try again.");

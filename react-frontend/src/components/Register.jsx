@@ -3,11 +3,14 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -15,6 +18,8 @@ const Register = () => {
     try {
       await axios.post("http://localhost:8000/api/register", data);
       toast.success("Registration successful!");
+      reset(); // Clear input fields
+      navigate("/login"); // Redirect to login
     } catch (error) {
       console.error("Registration failed", error);
       toast.error("Registration failed. Please try again.");
