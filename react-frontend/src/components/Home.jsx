@@ -1,6 +1,5 @@
-// Home.js
 import React from "react";
-import { Container, Jumbotron, Button } from "react-bootstrap";
+import { Container, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -9,7 +8,10 @@ const Home = () => {
       className="d-flex flex-column align-items-center justify-content-center"
       style={{ minHeight: "100vh" }}
     >
-      <Jumbotron className="text-center bg-light p-5 shadow-sm rounded">
+      <Card
+        className="text-center bg-light p-5 shadow-sm rounded"
+        style={{ maxWidth: "600px" }}
+      >
         <h1 className="display-4 mb-4">Welcome to Our App!</h1>
         <p className="lead mb-4">
           This is a professional authentication system with Firebase, React,
@@ -27,7 +29,7 @@ const Home = () => {
             </Button>
           </Link>
         </div>
-      </Jumbotron>
+      </Card>
     </Container>
   );
 };
