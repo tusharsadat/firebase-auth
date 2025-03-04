@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/authSlice";
 import { auth, googleProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import axios from "axios";
-import { Form, Button, Container, Card } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { Form, Button, Container, Card, Alert } from "react-bootstrap";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (data) => {
     try {
-      const response = await axios.post("/api/login", { email, password });
-      dispatch(setUser({ user: email, token: response.data.token }));
+      const response = await axios.post("/api/login", data);
+      dispatch(setUser({ user: data.email, token: response.data.token }));
     } catch (error) {
       console.error("Login failed", error);
     }
@@ -37,16 +40,26 @@ const Login = () => {
     >
       <Card style={{ width: "400px" }} className="p-4 shadow-sm">
         <h2 className="mb-4 text-center">Login</h2>
-        <Form onSubmit={handleLogin}>
+        <Form onSubmit={handleSubmit(handleLogin)} noValidate>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Invalid email format",
+                },
+              })}
+              isInvalid={errors.email}
             />
+            {errors.email && (
+              <Form.Control.Feedback type="invalid">
+                {errors.email.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -54,15 +67,26 @@ const Login = () => {
             <Form.Control
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
+              isInvalid={errors.password}
             />
+            {errors.password && (
+              <Form.Control.Feedback type="invalid">
+                {errors.password.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
 
           <Button variant="primary" type="submit" className="w-100 mb-2">
             Login
           </Button>
+
           <Button
             variant="danger"
             className="w-100"
