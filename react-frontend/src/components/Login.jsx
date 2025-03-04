@@ -6,6 +6,7 @@ import { signInWithPopup } from "firebase/auth";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card, Alert } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,10 @@ const Login = () => {
     try {
       const response = await axios.post("/api/login", data);
       dispatch(setUser({ user: data.email, token: response.data.token }));
+      toast.success("Login successful!");
     } catch (error) {
       console.error("Login failed", error);
+      toast.error("Invalid credentials. Please try again.");
     }
   };
 
@@ -28,8 +31,10 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       dispatch(setUser({ user: result.user.email, token: "google-token" }));
+      toast.success("Google login successful!");
     } catch (error) {
       console.error("Google login failed", error);
+      toast.error("Google login failed. Please try again.");
     }
   };
 

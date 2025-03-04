@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const {
@@ -13,9 +14,10 @@ const Register = () => {
   const handleRegister = async (data) => {
     try {
       await axios.post("/api/register", data);
-      alert("Registration Successful");
+      toast.success("Registration successful!");
     } catch (error) {
       console.error("Registration failed", error);
+      toast.error("Registration failed. Please try again.");
     }
   };
 
