@@ -18,7 +18,10 @@ const Login = () => {
 
   const handleLogin = async (data) => {
     try {
-      const response = await axios.post("/api/login", data);
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        data
+      );
       dispatch(setUser({ user: data.email, token: response.data.token }));
       toast.success("Login successful!");
     } catch (error) {

@@ -13,7 +13,7 @@ const Register = () => {
 
   const handleRegister = async (data) => {
     try {
-      await axios.post("/api/register", data);
+      await axios.post("http://localhost:8000/api/register", data);
       toast.success("Registration successful!");
     } catch (error) {
       console.error("Registration failed", error);
