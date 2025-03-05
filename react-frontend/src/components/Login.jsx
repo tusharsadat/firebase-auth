@@ -7,7 +7,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -109,6 +109,9 @@ const Login = () => {
             Login with Google
           </Button>
         </Form>
+        <div className="text-center mt-3">
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
       </Card>
     </Container>
   );
